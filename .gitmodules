@@ -1,0 +1,3 @@
+[submodule "librscs"]
+	path = librscs
+	url = https://github.com/cansat-rsce/librscs.git
