@@ -95,4 +95,19 @@
 #define RSCS_UART_BUFSIZE_RX 50 // размер буфера на RX
 #define RSCS_UART_BUFSIZE_TX 50 // размер буфера на TX
 
+
+// ========================================================
+// Настройки модуля BMP280
+// ========================================================
+//Выбор интерфейса обмена (SPI или I2C)
+#define RSCS_BMP280_IF SPI
+
+#if RSCS_BMP280_IF == SPI
+// Настройки пина CS
+#define RSCS_BMP280_CSDDR DDRA
+#define RSCS_BMP280_CSPORT PORTA
+#define RSCS_BMP280_CSPIN 1
+
+#endif //RSCS_BMP280_IF == SPI
+
 #endif /* CONFIG_H_ */
