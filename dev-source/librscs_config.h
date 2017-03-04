@@ -99,14 +99,11 @@ enum rscs_enum_ifaces {
 // модуль SERVO всегда использует таймер 1. Если это таймер занят под другие задачи, использовать модуль SERVO не получится
 // Настройки зависят от микроконтроллера - это пины, на которые выведены каналы захвата-сравнения таймера 1
 #ifdef __AVR_ATmega328P__
-
-#define RSCS_SERVO_TIM1_A_REG_DDR	(DDRB)
-#define RSCS_SERVO_TIM1_A_PIN_MASK	(1 << 1)
-
-#define RSCS_SERVO_TIM1_B_REG_DDR	(DDRB)
-#define RSCS_SERVO_TIM1_B_PIN_MASK	(1 << 2)
+#define RSCS_SERVO_PORT (PORTC)
 
 #elif defined __AVR_ATmega128__
+
+#define RSCS_SERVO_PORT (PORTA)
 // TODO: Посмотреть в даташите
 #endif
 
