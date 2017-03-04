@@ -49,11 +49,11 @@
 // Настройки ONE_WIRE - модуля взаимодействия по ONEWIRE шине
 // ========================================================
 // Регистр PORT на котором расположен пин onewire шины
-#define RSCS_ONEWIRE_REG_PORT (PORTB)
+#define RSCS_ONEWIRE_REG_PORT (PORTA)
 // Регистр PIN на котором расположен пин onewire шины
-#define RSCS_ONEWIRE_REG_PIN  (PINB)
+#define RSCS_ONEWIRE_REG_PIN  (PINA)
 // Регистр DDR на котором расположен пин onewire шины
-#define RSCS_ONEWIRE_REG_DDR  (DDRB)
+#define RSCS_ONEWIRE_REG_DDR  (DDRA)
 // Битовая маска, задающая тот самый пин на порту
 #define RSCS_ONEWIRE_PIN_MASK (1 << 0)
 
@@ -76,11 +76,11 @@
 // Настройки зависят от микроконтроллера - это пины, на которые выведены каналы захвата-сравнения таймера 1
 #ifdef __AVR_ATmega328P__
 
-#define RSCS_SERVO_TIM1_A_REG_DDR	(DDRB)
-#define RSCS_SERVO_TIM1_A_PIN_MASK	(1 << 1)
+//#define RSCS_SERVO_TIM1_A_REG_DDR	(DDRB)
+//#define RSCS_SERVO_TIM1_A_PIN_MASK	(1 << 1)
 
-#define RSCS_SERVO_TIM1_B_REG_DDR	(DDRB)
-#define RSCS_SERVO_TIM1_B_PIN_MASK	(1 << 2)
+//#define RSCS_SERVO_TIM1_B_REG_DDR	(DDRB)
+//#define RSCS_SERVO_TIM1_B_PIN_MASK	(1 << 2)
 
 #elif defined __AVR_ATmega128__
 // TODO: Посмотреть в даташите
@@ -104,9 +104,9 @@
 
 #if RSCS_BMP280_IF == SPI
 // Настройки пина CS
-#define RSCS_BMP280_CSDDR DDRA
-#define RSCS_BMP280_CSPORT PORTA
-#define RSCS_BMP280_CSPIN 1
+#define RSCS_BMP280_CSDDR DDRB
+#define RSCS_BMP280_CSPORT PORTB
+#define RSCS_BMP280_CSPIN 4
 
 #endif //RSCS_BMP280_IF == SPI
 
