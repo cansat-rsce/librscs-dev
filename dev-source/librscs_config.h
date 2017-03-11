@@ -107,6 +107,8 @@
 #define RSCS_BMP280_CSDDR DDRB
 #define RSCS_BMP280_CSPORT PORTB
 #define RSCS_BMP280_CSPIN 4
+// Частота обмена в килогерцах
+#define RSCS_BMP280_SPI_FREQ_kHz 64
 
 #endif //RSCS_BMP280_IF == SPI
 
