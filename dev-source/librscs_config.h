@@ -4,6 +4,16 @@
 #include <avr/io.h>
 
 
+
+// ========================================================
+// Установка режима debug (отладочные сообщения и т.д.)
+// Для включения раскомментируйте
+// ========================================================
+
+#define RSCS_DEBUGMODE 1
+
+
+
 // ========================================================
 // Настройки SPI - драйвера соответствующего контроллера атмеги
 // (пока поддерживается только режим мастера)
@@ -29,6 +39,8 @@
 
 #endif
 
+
+
 // ========================================================
 // Настройки I2C - драйвера TWI контроллера атмеги
 // (пока поддерживается только режим мастера)
@@ -43,6 +55,7 @@
 #define RSCS_I2C_TIMEOUT_US		(100)
 // Количетво тактов ожидания таймаута на I2C операции
 #define RSCS_I2C_TIMEOUT_CYCLES	(5)
+
 
 
 // ========================================================
@@ -76,15 +89,16 @@
 // Настройки зависят от микроконтроллера - это пины, на которые выведены каналы захвата-сравнения таймера 1
 #ifdef __AVR_ATmega328P__
 
-//#define RSCS_SERVO_TIM1_A_REG_DDR	(DDRB)
-//#define RSCS_SERVO_TIM1_A_PIN_MASK	(1 << 1)
+#define RSCS_SERVO_TIM1_A_REG_DDR	(DDRB)
+#define RSCS_SERVO_TIM1_A_PIN_MASK	(1 << 1)
 
-//#define RSCS_SERVO_TIM1_B_REG_DDR	(DDRB)
-//#define RSCS_SERVO_TIM1_B_PIN_MASK	(1 << 2)
+#define RSCS_SERVO_TIM1_B_REG_DDR	(DDRB)
+#define RSCS_SERVO_TIM1_B_PIN_MASK	(1 << 2)
 
 #elif defined __AVR_ATmega128__
 // TODO: Посмотреть в даташите
 #endif
+
 
 
 // ========================================================
@@ -94,6 +108,7 @@
 #define RSCS_UART_USEBUFFERS // Добавить код для поддержки циклических буферов в UART
 #define RSCS_UART_BUFSIZE_RX 50 // размер буфера на RX
 #define RSCS_UART_BUFSIZE_TX 50 // размер буфера на TX
+
 
 
 // ========================================================
@@ -111,5 +126,26 @@
 #define RSCS_BMP280_SPI_FREQ_kHz 64
 
 #endif //RSCS_BMP280_IF == SPI
+
+
+
+// ========================================================
+// Настройки дебажных макросов
+// ========================================================
+#ifdef RSCS_DEBUGMODE
+
+#define RSCS_DEBUG_INIT(UART) stdin = stdout = rscs_make_uart_stream(UART); //инициализация дебага, принимает rscs_uart_bus_t *
+
+#define RSCS_DEBUG printf //предполагается писать этот макрос вместо дебажного printf
+
+#else
+
+#define RSCS_DEBUG_INIT(UART) (void) UART;
+
+#define RSCS_DEBUG (void) //и в случае отключения дебага просто не делать ничего
+
+#endif //#ifdef RSCS_DEBUGMODE
+
+
 
 #endif /* CONFIG_H_ */
