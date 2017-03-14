@@ -14,7 +14,7 @@
 int bmp280_spi_test(void){
 	int retcode = 0;
 
-	rscs_bmp280_descriptor_t * bmp = rscs_bmp280_init(RSCS_BMP280_ADDR_HIGH);
+	rscs_bmp280_descriptor_t * bmp = rscs_bmp280_init();
 	rscs_bmp280_parameters_t params = {	.pressure_oversampling = RSCS_BMP280_OVERSAMPLING_X16,
 										.temperature_oversampling = RSCS_BMP280_OVERSAMPLING_X2,
 										.standbytyme = RSCS_BMP280_STANDBYTIME_62DOT5MS,
