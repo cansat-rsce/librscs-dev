@@ -9,7 +9,7 @@
 
 #include "rscs/bmp280.h"
 
-#define OPR(OP) retcode = OP if(retcode != RSCS_E_NONE) goto end;
+#define OPR(OP) retcode = OP; if(retcode != RSCS_E_NONE) goto end;
 
 int bmp280_spi_test(void){
 	int retcode = 0;
