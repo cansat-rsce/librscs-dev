@@ -11,8 +11,8 @@
 
 #define OPR(OP) retcode = OP; if(retcode != RSCS_E_NONE) goto end;
 
-int bmp280_spi_test(void){
-	int retcode = 0;
+rscs_e bmp280_spi_test(void){
+	rscs_e retcode = 0;
 
 	rscs_bmp280_descriptor_t * bmp = rscs_bmp280_init();
 	rscs_bmp280_parameters_t params = {	.pressure_oversampling = RSCS_BMP280_OVERSAMPLING_X16,

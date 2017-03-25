@@ -1,7 +1,11 @@
 #include <stdio.h>
 
+#include <util/delay.h>
+#include <avr/interrupt.h>
+
 #include "rscs/uart.h"
 #include "rscs/i2c.h"
+#include "rscs/spi.h"
 #include "rscs/stdext/stdio.h"
 
 /* В этом файле располагаются различные тесты */
@@ -34,8 +38,9 @@ int init_uart_stdout(void)
 // в тесте читаются калибровочные данные устройства
 //int bmp180_i2c_test(void);
 
-int bmp280_spi_test(void);
-
+rscs_e bmp280_spi_test(void);
+rscs_e adc_internal_test(void);
+rscs_e adxl345_test(void);
 
 
 int main(void)
@@ -43,16 +48,25 @@ int main(void)
 	DDRB |= (1<<5);
 	PORTB |= (1<<5);
 	init_uart_stdout();
-
 	uint8_t tmp;
 	rscs_uart_read(uart0, &tmp, 1);
+
+	DDRB |= (1 << 4);
+	PORTB |= (1 << 4);
+
 
 	while(1)
 	{
 		int code = 231; //Why? Why not?!
+		code = adxl345_test();
+		printf("ADXL345: test complete, exit code %d\n", code);
 
-		code = bmp280_spi_test();
-		printf("BMP280: test complete, exit code %d\n", code);
+		/*
+		code = adc_internal_test();
+		printf("ADC: test complete, exit code %d\n", code);*/
+
+		/*code = bmp280_spi_test();
+		printf("BMP280: test complete, exit code %d\n", code);*/
 
 		/*code = bmp180_i2c_test();
 		printf("test_complete with code: %d\n", code);*/
