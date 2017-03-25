@@ -110,11 +110,12 @@ enum rscs_enum_ifaces {
 // Настройки зависят от микроконтроллера - это пины, на которые выведены каналы захвата-сравнения таймера 1
 #ifdef __AVR_ATmega328P__
 #define RSCS_SERVO_PORT (PORTC)
+#define RSCS_SERVO_PORT_DDR (DDRC)
 
 #elif defined __AVR_ATmega128__
 
 #define RSCS_SERVO_PORT (PORTA)
-// TODO: Посмотреть в даташите
+#define RSCS_SERVO_PORT_DDR (DDRA)
 #endif
 
 
@@ -124,8 +125,8 @@ enum rscs_enum_ifaces {
 // ========================================================
 // Использовать ли буферизацию
 #define RSCS_UART_USEBUFFERS // Добавить код для поддержки циклических буферов в UART
-#define RSCS_UART_BUFSIZE_RX 50 // размер буфера на RX
-#define RSCS_UART_BUFSIZE_TX 50 // размер буфера на TX
+#define RSCS_UART_BUFSIZE_RX 60 // размер буфера на RX
+#define RSCS_UART_BUFSIZE_TX 200 // размер буфера на TX
 
 
 
