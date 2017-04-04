@@ -41,6 +41,7 @@ int init_uart_stdout(void)
 rscs_e bmp280_spi_test(void);
 rscs_e adc_internal_test(void);
 rscs_e adxl345_test(void);
+rscs_e ads1115_test(void);
 
 
 int main(void)
@@ -58,8 +59,11 @@ int main(void)
 	while(1)
 	{
 		int code = 231; //Why? Why not?!
-		code = adxl345_test();
-		printf("ADXL345: test complete, exit code %d\n", code);
+		code = ads1115_test();
+		printf("ADS1115: test complete, exit code %d\n", code);
+
+		/*code = adxl345_test();
+		printf("ADXL345: test complete, exit code %d\n", code);*/
 
 		/*
 		code = adc_internal_test();
