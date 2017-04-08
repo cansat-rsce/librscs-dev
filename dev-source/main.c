@@ -5,6 +5,7 @@
 
 #include "rscs/uart.h"
 #include "rscs/i2c.h"
+#include "rscs/tsl2561.h"
 #include "rscs/spi.h"
 #include "rscs/stdext/stdio.h"
 
@@ -38,42 +39,24 @@ int init_uart_stdout(void)
 // в тесте читаются калибровочные данные устройства
 //int bmp180_i2c_test(void);
 
-rscs_e bmp280_spi_test(void);
-rscs_e adc_internal_test(void);
-rscs_e adxl345_test(void);
-rscs_e ads1115_test(void);
-
 
 int main(void)
 {
-	DDRB |= (1<<5);
-	PORTB |= (1<<5);
+	uint16_t sensor_data0;
+	uint16_t sensor_data1;
+
+	rscs_i2c_init();
 	init_uart_stdout();
-	uint8_t tmp;
-	rscs_uart_read(uart0, &tmp, 1);
-
-	DDRB |= (1 << 4);
-	PORTB |= (1 << 4);
-
+	rscs_e error = rscs_tsl2561_init();
+	printf("init_error %d\n", error);
 
 	while(1)
 	{
-		int code = 231; //Why? Why not?!
-		code = ads1115_test();
-		printf("ADS1115: test complete, exit code %d\n", code);
-
-		/*code = adxl345_test();
-		printf("ADXL345: test complete, exit code %d\n", code);*/
-
-		/*
-		code = adc_internal_test();
-		printf("ADC: test complete, exit code %d\n", code);*/
-
-		/*code = bmp280_spi_test();
-		printf("BMP280: test complete, exit code %d\n", code);*/
-
-		/*code = bmp180_i2c_test();
-		printf("test_complete with code: %d\n", code);*/
+		error = rscs_tsl2561_read(&sensor_data0, &sensor_data1);
+		printf("read_error %d\n", error);
+		uint16_t lux = get_lux(0, 2, sensor_data0, sensor_data1, 1);
+		printf("lux = %d\n", lux);
+		_delay_ms(500);
 	}
 
 	return 0;
