@@ -40,25 +40,40 @@ int init_uart_stdout(void)
 //int bmp180_i2c_test(void);
 
 
-int main(void)
+int tsl2561_test(void)
 {
 	uint16_t sensor_data0;
 	uint16_t sensor_data1;
 
 	rscs_i2c_init();
 	init_uart_stdout();
-	rscs_e error = rscs_tsl2561_init();
-	printf("init_error %d\n", error);
+
+	rscs_tsl2561_t * s1 = rscs_tsl2561_init(RSCS_TSL2561_ADDR_LOW);
+	rscs_tsl2561_t * s2 = rscs_tsl2561_init(RSCS_TSL2561_ADDR_FLOATING);
+	rscs_tsl2561_t * s3 = rscs_tsl2561_init(RSCS_TSL2561_ADDR_HIGH);
+
+	rscs_e error;
+	error = rscs_tsl2561_setup(s1);
+	error = rscs_tsl2561_setup(s2);
+	error = rscs_tsl2561_setup(s3);
 
 	while(1)
 	{
-		error = rscs_tsl2561_read(&sensor_data0, &sensor_data1);
+
 		printf("read_error %d\n", error);
-		uint16_t temp = sensor_data0;
-		sensor_data0 = sensor_data1;
-		sensor_data1 = temp;
-		uint16_t lux = get_lux(0, 2, sensor_data0, sensor_data1, 1);
-		printf("lux = %d\n", lux);
+
+		error = rscs_tsl2561_read(s1, &sensor_data0, &sensor_data1);
+		error = rscs_tsl2561_read(s2, &sensor_data0, &sensor_data1);
+		error = rscs_tsl2561_read(s3, &sensor_data0, &sensor_data1);
+
+		uint16_t lux1 = rscs_tsl2561_get_lux(s1, RSCS_TSL2561_GAIN_1X, RSCS_TSL2561_TYPE_CS, RSCS_TSL2561_INT_402MS, sensor_data0, sensor_data1);
+		uint16_t lux2 = rscs_tsl2561_get_lux(s2, RSCS_TSL2561_GAIN_1X, RSCS_TSL2561_TYPE_CS, RSCS_TSL2561_INT_402MS, sensor_data0, sensor_data1);
+		uint16_t lux3 = rscs_tsl2561_get_lux(s3, RSCS_TSL2561_GAIN_16X, RSCS_TSL2561_TYPE_CS, RSCS_TSL2561_INT_402MS, sensor_data0, sensor_data1);
+
+		printf("lux1 = %d\n", lux1);
+		printf("lux2 = %d\n", lux2);
+		printf("lux3 = %d\n", lux3);
+
 		_delay_ms(500);
 	}
 
