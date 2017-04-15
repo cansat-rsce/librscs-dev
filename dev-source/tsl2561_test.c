@@ -54,6 +54,9 @@ int main(void)
 	{
 		error = rscs_tsl2561_read(&sensor_data0, &sensor_data1);
 		printf("read_error %d\n", error);
+		uint16_t temp = sensor_data0;
+		sensor_data0 = sensor_data1;
+		sensor_data1 = temp;
 		uint16_t lux = get_lux(0, 2, sensor_data0, sensor_data1, 1);
 		printf("lux = %d\n", lux);
 		_delay_ms(500);
