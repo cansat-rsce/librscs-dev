@@ -36,7 +36,6 @@ rscs_e adxl345_test(void) {
 		_delay_ms(1);
 	}
 
-end:
 	return retcode;
 }
 
