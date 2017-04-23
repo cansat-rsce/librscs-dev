@@ -42,6 +42,7 @@ rscs_e bmp280_spi_test(void);
 rscs_e adc_internal_test(void);
 rscs_e adxl345_test(void);
 rscs_e ads1115_test(void);
+rscs_e tsl2561_test(void);
 
 
 int main(void)
