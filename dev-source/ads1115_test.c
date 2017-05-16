@@ -19,9 +19,8 @@ rscs_e ads1115_test() {
 	printf("ADS1115: changing rate\n");
 	OPR(rscs_ads1115_set_datarate(ads, RSCS_ADS1115_DATARATE_860SPS))
 	printf("ADS1115: changing channel\n");
-	OPR(rscs_ads1115_set_channel(ads, RSCS_ADS1115_CHANNEL_0))
 	printf("ADS1115: starting continuous\n");
-	OPR(rscs_ads1115_start_continuous(ads))
+	OPR(rscs_ads1115_start_continuous(ads, RSCS_ADS1115_CHANNEL_0))
 
 
 	int16_t result;

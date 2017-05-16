@@ -28,7 +28,6 @@ rscs_e adxl345_test(void) {
 
 	while(1) {
 		//OPR(rscs_adxl345_read(adxl, &x, &y, &z))
-		//OPR(rscs_adxl345_getRegisterValue(adxl, 0, &devid))
 		//printf("ADXL345: data: %d  %d  %d\n", x, y, z);
 		//printf("ADXL345: devid: %d\n", devid);
 		rscs_adxl345_GetGXYZ(adxl, &x, &y, &z, &x_g, &y_g, &z_g);
