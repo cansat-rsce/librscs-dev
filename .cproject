@@ -65,7 +65,7 @@
 					</folderInfo>
 					<sourceEntries>
 						<entry excluding="dev-source" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
-						<entry excluding="adxl345_test.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="dev-source"/>
+						<entry excluding="internal_adc_test.c|bmp180_test.c|adxl345_test.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="dev-source"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -130,8 +130,8 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="dev-source" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="dev-source"/>
+						<entry excluding="librscs/rscs/_source/bmp280.c|dev-source" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="internal_adc_test.c|bmp180_test.c|ads1115_test.c|adxl345_test.c|bmp280_test.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="dev-source"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

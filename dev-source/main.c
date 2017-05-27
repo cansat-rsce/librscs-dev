@@ -19,40 +19,6 @@
 rscs_uart_bus_t * uart0;
 // инициализация отладочного UART в STDOUT
 
-int ina219_test()
-{
-	rscs_ina219_t * device;
-	rscs_e error;
-
-	uint16_t powerValue;
-	uint8_t ina219_adr = (0b1000101);
-
-	device = rscs_ina219_init(ina219_adr);
-	printf("init Ok\n");
-
-	error = rscs_ina219_set_cal(device, 50, 100);
-	if (error != RSCS_E_NONE){
-		printf("calibration error , error # %i\n", error);
-		return error;
-	}
-	printf("calibration Ok!\n");
-
-	error = rscs_ina219_start_continuous(device,RSCS_INA219_CHANNEL_POWER);
-	if (error != RSCS_E_NONE){
-		printf("start error , error # %i\n", error);
-		return error;
-	}
-	printf("start Ok!\n");
-
-	while(1)
-	{
-		error = rscs_ina219_read(device, RSCS_INA219_CHANNEL_POWER, &powerValue);
-		printf("%i", powerValue);
-		_delay_us(100);
-	}
-
-	return RSCS_E_NONE;
-}
 int init_uart_stdout(void)
 {
 	uart0 = rscs_uart_init(RSCS_UART_ID_UART0, 	RSCS_UART_FLAG_ENABLE_TX |
@@ -62,7 +28,7 @@ int init_uart_stdout(void)
 	if (!uart0)
 		return 1;
 
-	rscs_uart_set_baudrate(uart0, 57600);
+	rscs_uart_set_baudrate(uart0, 9600);
 	rscs_uart_set_character_size(uart0, 8);
 	rscs_uart_set_parity(uart0, RSCS_UART_PARITY_NONE);
 	rscs_uart_set_stop_bits(uart0, RSCS_UART_STOP_BITS_ONE);
@@ -80,6 +46,7 @@ int init_uart_stdout(void)
 //int bmp180_i2c_test(void);
 
 /*int servo_test()
+
 {
 	rscs_servo_init(2);
 	rscs_servo_timer_init();
@@ -120,27 +87,66 @@ int init_uart_stdout(void)
 	return 0;
 }*/
 
+int ina219_test()
+{
+	rscs_ina219_t * device;
+	rscs_e error;
+
+	uint16_t powerValue;
+	uint8_t ina219_adr = (0b1000101);
+
+	device = rscs_ina219_init(ina219_adr);
+	printf("init Ok\n");
+
+	error = rscs_ina219_set_cal(device, 50, 100);
+	if (error != RSCS_E_NONE){
+		printf("calibration error , error # %i\n", error);
+		return error;
+	}
+	printf("calibration Ok!\n");
+
+	error = rscs_ina219_start_continuous(device,RSCS_INA219_CHANNEL_POWER);
+	if (error != RSCS_E_NONE){
+		printf("start error , error # %i\n", error);
+		return error;
+	}
+	printf("start Ok!\n");
+
+	while(1)
+	{
+		error = rscs_ina219_read(device, RSCS_INA219_CHANNEL_POWER, &powerValue);
+		printf("%i", powerValue);
+		_delay_us(100);
+	}
+
+	return RSCS_E_NONE;
+}
+
 int main(void)
 {
 	sei();
 	init_uart_stdout();
 	rscs_i2c_init();
-	//rscs_i2c_set_scl_rate(16);
+	//rscs_i2c_set_scl_rate(100);
+
+	printf("hellloooo\n");
+	printf("LOL\n");
 	printf("hellloooo\n");
 
 	ina219_test();
 
-	//printf("you're so stupid");
-
-	//DDRB |= (1 << 5);
-	//servo_test();
-
+	/*rscs_servo_init(2);
+	rscs_servo_timer_init();
 	while(1)
 	{
-		//int code = bmp180_i2c_test();
-		//printf("test_complete with code: %d\n", code);
+		rscs_servo_set_angle(0,180);
+		rscs_servo_set_angle(1,0);
+		_delay_ms(1000);
+		rscs_servo_set_angle(1,180);
+		rscs_servo_set_angle(0,0);
+		_delay_ms(1000);
 	}
-
+	*/
 	return 0;
 }
 
