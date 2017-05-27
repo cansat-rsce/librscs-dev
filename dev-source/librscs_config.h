@@ -7,7 +7,7 @@
 // настройки GPS
 // ========================================================
 // размер буфера для накопления сообщения
-#define RSCS_GPS_BUFFER_SIZE (100)
+#define RSCS_GPS_BUFFER_SIZE (300)
 // очевидные настройки уарта
 #define RSCS_GPS_UART_BAUD_RATE (9600)
 #define RSCS_GPS_UART_STOP_BITS (1)
