@@ -7,21 +7,11 @@
 // настройки GPS
 // ========================================================
 // размер буфера для накопления сообщения
-#define RSCS_GPS_BUFFER_SIZE (300)
+#define RSCS_GPS_BUFFER_SIZE (100)
 // очевидные настройки уарта
 #define RSCS_GPS_UART_BAUD_RATE (9600)
 #define RSCS_GPS_UART_STOP_BITS (1)
 #define RSCS_GPS_UART_PARITY (RSCS_UART_PARITY_NONE)
-
-
-
-// ========================================================
-// Установка режима debug (отладочные сообщения и т.д.)
-// Для включения раскомментируйте
-// ========================================================
-
-#define RSCS_DEBUGMODE 1
-
 
 
 // ========================================================
@@ -30,7 +20,6 @@
 // ========================================================
 // Настройки пинов зависят от микроконтроллера - пины SPI модуля нужно конфигурировать руками...
 #ifdef __AVR_ATmega328P__
-
 
 #define RSCS_SPI_PORTX	(PORTB) // регистр PORT порта на котором висят все пины SPI
 #define RSCS_SPI_DDRX	(DDRB)	// регистр DDR порта на котором висят все пины SPI
@@ -80,16 +69,19 @@
 #define RSCS_ONEWIRE_REG_DDR  (DDRC)
 // Битовая маска, задающая тот самый пин на порту
 #define RSCS_ONEWIRE_PIN_MASK (1 << 0)
+// Включение атомарности (запрещает все прерывания во время вызова большинства функций модуля)
+// Для включения раскомментировать
+#define RSCS_ONEWIRE_ATOMIC
 
 
 
 // ========================================================
 // Настройки модуля SD - модуля работы с SD картами
 // ========================================================
-// Частота SPI модуля SD карты, которую он устанавливает при вызове rscs_sd_spi_setup
-#define RSCS_SDCARD_SPI_CLK_SLOW (16000)
-// Частота SPI модуля SD карты, которую он устанавливает при вызове rscs_sd_spi_setup_slow
-#define RSCS_SDCARD_SPI_CLK_FAST (400)
+// Частота SPI модуля SD карты, которую он устанавливает при вызове rscs_sd_spi_setup_slow. Задается в кГц.
+#define RSCS_SDCARD_SPI_CLK_SLOW (200)
+// Частота SPI модуля SD карты, которую он устанавливает при вызове rscs_sd_spi_setup. Задается в кГц.
+#define RSCS_SDCARD_SPI_CLK_FAST (16000)
 
 
 
@@ -99,13 +91,12 @@
 // модуль SERVO всегда использует таймер 1. Если это таймер занят под другие задачи, использовать модуль SERVO не получится
 // Настройки зависят от микроконтроллера - это пины, на которые выведены каналы захвата-сравнения таймера 1
 #ifdef __AVR_ATmega328P__
-#define RSCS_SERVO_PORT (PORTC)
-#define RSCS_SERVO_PORT_DDR (DDRC)
 
 #elif defined __AVR_ATmega128__
 
 #define RSCS_SERVO_PORT (PORTA)
 #define RSCS_SERVO_PORT_DDR (DDRA)
+// TODO: Посмотреть в даташите
 #endif
 
 
@@ -115,54 +106,43 @@
 // ========================================================
 // Использовать ли буферизацию
 #define RSCS_UART_USEBUFFERS // Добавить код для поддержки циклических буферов в UART
-#define RSCS_UART_BUFSIZE_RX 60 // размер буфера на RX
-#define RSCS_UART_BUFSIZE_TX 200 // размер буфера на TX
+#define RSCS_UART_BUFSIZE_RX 50 // размер буфера на RX
+#define RSCS_UART_BUFSIZE_TX 50 // размер буфера на TX
 
 
 
 // ========================================================
-// Настройки модуля BMP280
+// Настройки DHT22
 // ========================================================
-//Выбор интерфейса обмена (SPI или I2C) (раскомментируйте нужный)
-#define RSCS_BMP280_IF_I2C
-//#define RSCS_BMP280_IF_SPI
-
-#ifdef RSCS_BMP280_IF_SPI
-// Настройки пина CS
-#define RSCS_BMP280_CSDDR DDRB
-#define RSCS_BMP280_CSPORT PORTB
-#define RSCS_BMP280_CSPIN 4
-// Частота обмена в килогерцах
-#define RSCS_BMP280_SPI_FREQ_kHz 64
-
-#endif //RSCS_BMP280_IF == RSCS_IF_SPI
+// Включение атомарности операции чтения (запрещает все прерывания на время исполнения rscs_dht22_read())
+// Для включения раскомментировать
+//#define RSCS_DHT22_ATOMIC 1
 
 
 
 // ========================================================
-// Настройки модуля ADXL345
+// Настройки INA219
 // ========================================================
-// Настройка пина CS
-#define ADXL345_CS_DDR			DDRB	// регистр DDR порта, на котором расположен CS пин
-#define ADXL345_CS_PORT			PORTB	// регистр PORT порта, на котором расположен CS пин
-#define ADXL345_CS_PIN			4		// номер пина CS в порту
-
-
+#define RSCS_INA219_TIMEOUT_CYCLES 50
 
 // ========================================================
 // Настройки дебажных макросов
 // ========================================================
+// Установка режима debug (отладочные сообщения и т.д.)
+// Для включения раскомментируйте
+//#define RSCS_DEBUGMODE 1
+
 #ifdef RSCS_DEBUGMODE
 
-#define RSCS_DEBUG_INIT(UART) stdin = stdout = rscs_make_uart_stream(UART); //инициализация дебага, принимает rscs_uart_bus_t *
-
-#define RSCS_DEBUG printf //предполагается писать этот макрос вместо дебажного printf
+ //инициализация дебага, принимает rscs_uart_bus_t * в который будет выводится дебажная информация
+#define RSCS_DEBUG_INIT(UART) stdin = stdout = rscs_make_uart_stream(UART);
+//предполагается писать этот макрос вместо дебажного printf
+#define RSCS_DEBUG printf
 
 #else
 
 #define RSCS_DEBUG_INIT(UART) (void) UART;
-
-#define RSCS_DEBUG (void) //и в случае отключения дебага просто не делать ничего
+#define RSCS_DEBUG for(;0;) printf //и в случае отключения дебага просто не делать ничего
 
 #endif //#ifdef RSCS_DEBUGMODE
 
